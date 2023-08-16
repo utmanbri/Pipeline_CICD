@@ -1,7 +1,3 @@
-@Library('docker') _
-
-def img = ''
-
 pipeline {
     agent {
         node {
