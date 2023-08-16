@@ -15,11 +15,10 @@ pipeline {
     }
     stages {
         stage('init') {
-            scripts {
-                library "docker"
+            steps {
+                library 'docker'
             }
         }
-    stages {
         stage('checkout') {
             steps {
                 git branch: 'main',
@@ -27,13 +26,11 @@ pipeline {
                 url: 'https://github.com/utmanbri/Pipeline_CICD.git'
             }
         }
-
         stage('Test') {
             steps {
                 sh "pytest testRoutes.py"
             }
         }
-
         stage('Clean Up') {
             steps {
                 sh 'docker stop $(docker ps -a | grep ${JOB_NAME} | awk \'{print $1}\')'
@@ -41,7 +38,6 @@ pipeline {
                 sh 'docker rm ${JOB_NAME}'
             }
         }
-
         stage('Build Image') {
             steps {
                 script {
@@ -51,7 +47,6 @@ pipeline {
                 }
             }
         }
-
         stage('Push To DockerHub') {
             steps {
                 script {
@@ -61,7 +56,6 @@ pipeline {
                 }
             }
         }
-
         stage('Deploy') {
             steps {
                 sh "docker run -d --rm --name ${JOB_NAME} -p 5000:5000 ${img}"
