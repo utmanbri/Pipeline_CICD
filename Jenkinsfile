@@ -8,13 +8,17 @@ pipeline {
             label 'docker'
         }
     }
-
     environment {
         registry = "brittanysaic/appfac1_repo"
         registryCredential = credentials('credential-id')
         githubCredential = credentials('credential-id')
     }
-
+    stages {
+        stage('init') {
+            scripts {
+                library "docker"
+            }
+        }
     stages {
         stage('checkout') {
             steps {
